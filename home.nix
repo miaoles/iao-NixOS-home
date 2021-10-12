@@ -43,7 +43,7 @@
 		bash = {
 			enable = true;
 			bashrcExtra = ''
-				sh ~/Configuration/bash/bashrc
+				source ~/Configuration/bash/bashrc
 			'';
 		};
 
@@ -53,7 +53,7 @@
 			userEmail = "iao_mm@pm.me";
 		};
 
-		steam.enable = true;
+		#steam.enable = true;
 	};
 
 	services.picom.enable = true;
