@@ -5,6 +5,9 @@
 {
 	imports = [];
 
+	# Allow unfree packages.
+	nixpkgs.config.allowUnfree = true;
+
 	home = {
 		username = "miles";
 		homeDirectory = "/home/miles";
@@ -16,8 +19,11 @@
 			copyq
 			discord
 			firefox
+			gimp
 			picom
+			qbittorrent
 			tint2
+			yt-dlp
 		];
 
 		sessionVariables = {};
@@ -31,13 +37,27 @@
 		# the Home Manager release notes for a list of state version
 		# changes in each release.
 		stateVersion = "21.05";
-	}
+	};
 
-	# Let home-manager manage itself.
-	programs.home-manager.enable = true;
-	# Allow unfree packages.
-	nixpkgs.config.allowUnfree = true;
+	programs = {
+		# Let home-manager manage itself.
+		home-manager.enable = true;
+
+		bash = {
+			enable = true;
+			bashrcExtra = ''
+				sh ~/Configuration/bash/bashrc
+			'';
+		};
+
+		git = {
+			enable = true;
+			userName  = "miaoles";
+			userEmail = "iao_mm@pm.me";
+		};
+
+		steam.enable = true;
+	};
 
 	services.picom.enable = true;
-
 }
