@@ -20,7 +20,7 @@
 			picom
 			qbittorrent
 			tint2
-			yt-dlp
+			unstable.yt-dlp
 		];
 
 		sessionVariables = {};
