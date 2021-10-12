@@ -5,9 +5,6 @@
 {
 	imports = [];
 
-	# Allow unfree packages.
-	nixpkgs.config.allowUnfree = true;
-
 	home = {
 		username = "miles";
 		homeDirectory = "/home/miles";
