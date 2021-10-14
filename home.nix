@@ -7,7 +7,7 @@ let
 in
 {
 	imports = [
-		./config.nix
+		#./config.nix
 	];
 
 	home = {
