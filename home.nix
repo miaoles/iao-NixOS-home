@@ -78,14 +78,14 @@ in
 			enable = true;
 		};
 
-		sxhkd = {
-			enable = true;
-		};
+		#sxhkd = {
+		#	enable = true;
+		#};
 	};
 
-	gtk = {
-		enable = true;
-	};
+	#gtk = {
+	#	enable = true;
+	#};
 
 	qt = {
 		enable = true;
