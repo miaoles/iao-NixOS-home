@@ -41,20 +41,6 @@ in
 		stateVersion = "21.11";
 	};
 
-	services = {
-		picom = {
-			enable = true;
-		};
-
-		xsettingsd = {
-			enable = true;
-		};
-
-		sxhkd = {
-			enable = true;
-		};
-	};
-
 	programs = {
 		# Let home-manager manage itself.
 		home-manager = {
@@ -68,6 +54,14 @@ in
 			shellOptions = [];
 		};
 
+		gtk = {
+			enable = true;
+		};
+
+		qt = {
+			enable = true;
+		};
+
 		git = {
 			enable = true;
 			userName  = "miaoles";
@@ -79,6 +73,20 @@ in
 		};
 
 		steam = {
+			enable = true;
+		};
+	};
+
+	services = {
+		picom = {
+			enable = true;
+		};
+
+		xsettingsd = {
+			enable = true;
+		};
+
+		sxhkd = {
 			enable = true;
 		};
 	};
