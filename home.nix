@@ -10,9 +10,6 @@ in
 		./config.nix
 	];
 
-	# Allow unfree packages.
-	allowUnfree = true;
-
 	home = {
 		username = "miles";
 		homeDirectory = "/home/miles";
