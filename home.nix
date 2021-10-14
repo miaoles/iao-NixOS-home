@@ -6,9 +6,7 @@ let
 	unstable = import <nixos-unstable> {};
 in
 {
-	imports = [
-		#./config.nix
-	];
+	imports = [];
 
 	home = {
 		username = "miles";
@@ -51,6 +49,10 @@ in
 		xsettingsd = {
 			enable = true;
 		};
+
+		sxhkd = {
+			enable = true;
+		};
 	};
 
 	programs = {
@@ -61,10 +63,9 @@ in
 
 		bash = {
 			enable = true;
-			bashrcExtra = ''
-				source ~/Configuration/bash/bashrc
-				source ~/Configuration/bash/bash_profile
-			'';
+			bashrcExtra = ''source ~/Configuration/bash/bashrc'';
+			profileExtra = ''source ~/Configuration/bash/bash_profile'';
+			shellOptions = [];
 		};
 
 		git = {
@@ -77,8 +78,8 @@ in
 			enable = true;
 		};
 
-		#steam = {
-		#	enable = true;
-		#};
+		steam = {
+			enable = true;
+		};
 	};
 }
