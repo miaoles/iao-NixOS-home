@@ -54,14 +54,6 @@ in
 			shellOptions = [];
 		};
 
-		#gtk = {
-		#	enable = true;
-		#};
-
-		qt = {
-			enable = true;
-		};
-
 		git = {
 			enable = true;
 			userName  = "miaoles";
@@ -89,5 +81,13 @@ in
 		sxhkd = {
 			enable = true;
 		};
+	};
+
+	gtk = {
+		enable = true;
+	};
+
+	qt = {
+		enable = true;
 	};
 }
