@@ -2,8 +2,14 @@
 
 { config, pkgs, lib, ... }:
 
+let
+	unstable = import <nixos-unstable> {};
+in
 {
 	imports = [];
+
+	# Allow unfree packages.
+	allowUnfree = true;
 
 	home = {
 		username = "miles";
@@ -11,16 +17,18 @@
 
 		# Install these packages for just this user.
 		packages = with pkgs; [
-			cmst
-			chatterino2
-			copyq
-			discord
-			firefox
-			gimp
-			picom
-			qbittorrent
-			tint2
-			#yt-dlp
+			# Stable Packages
+			pkgs.cmst
+			pkgs.copyq
+			pkgs.etcher
+			pkgs.gimp
+			pkgs.qbittorrent
+
+			# Unstable Packages
+			unstable.discord
+			unstable.chatterino2
+			unstable.spotify
+			unstable.yt-dlp
 		];
 
 		sessionVariables = {};
@@ -33,17 +41,30 @@
 		# You can update Home Manager without changing this value. See
 		# the Home Manager release notes for a list of state version
 		# changes in each release.
-		stateVersion = "21.05";
+		stateVersion = "21.11";
+	};
+
+	services = {
+		picom = {
+			enable = true;
+		};
+
+		xsettingsd = {
+			enable = true;
+		};
 	};
 
 	programs = {
 		# Let home-manager manage itself.
-		home-manager.enable = true;
+		home-manager = {
+			enable = true;
+		};
 
 		bash = {
 			enable = true;
 			bashrcExtra = ''
 				source ~/Configuration/bash/bashrc
+				source ~/Configuration/bash/bash_profile
 			'';
 		};
 
@@ -53,11 +74,12 @@
 			userEmail = "iao_mm@pm.me";
 		};
 
-		#steam.enable = true;
+		firefox = {
+			enable = true;
+		};
+
+		#steam = {
+		#	enable = true;
+		#};
 	};
-
-	services.picom.enable = true;
-
-	# Allow unfree packages.
-	nixpkgs.config.allowUnfree = true;
 }
