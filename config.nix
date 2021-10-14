@@ -1,8 +1,8 @@
 # iao NixOS home-manager configuration
 
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
 	# Allow unfree packages.
-	allowUnfree = true;
+	config.allowUnfree = true;
 }
