@@ -6,7 +6,9 @@ let
 	unstable = import <nixos-unstable> {};
 in
 {
-	imports = [];
+	imports = [
+		./config.nix
+	];
 
 	# Allow unfree packages.
 	allowUnfree = true;
