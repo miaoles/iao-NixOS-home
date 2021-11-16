@@ -84,7 +84,7 @@
 			userEmail = "iao_mm@pm.me";
 			extraConfig = {
 				init.defaultBranch = "main";
-				credential.helper = "store --file ~/Configuration/git/credentials";
+				credential.helper = "cache";
 			};
 		};
 		
