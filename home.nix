@@ -2,30 +2,54 @@
 
 { config, pkgs, lib, ... }:
 
-let
-	unstable = import <nixos-unstable> {};
-in
 {
-	imports = [];
-
 	home = {
 		username = "miles";
 		homeDirectory = "/home/miles";
 
 		# Install these packages for just this user.
 		packages = with pkgs; [
-			# Stable Packages
-			pkgs.cmst
-			pkgs.copyq
-			pkgs.etcher
-			pkgs.gimp
-			pkgs.qbittorrent
-
-			# Unstable Packages
-			unstable.discord
-			unstable.chatterino2
-			unstable.spotify
-			unstable.yt-dlp
+			# Theme
+				pkgs.numix-sx-gtk-theme #GTK2 + GTK3
+				
+			# Shell
+				pkgs.neofetch
+				
+			# System Utilities
+				pkgs.cmst
+				pkgs.copyq
+				pkgs.etcher
+				
+			# Wine
+				pkgs.wineWowPackages.staging
+				#(pkgs.winetricks.override { wine = wineWowPackages.staging; })
+				#pkgs.q4wine #Not working yet
+				pkgs.icoutils
+				pkgs.protontricks
+				pkgs.protonup #proton-ge
+				
+			# Network Utilities
+				pkgs.qbittorrent
+				pkgs.soulseekqt
+				pkgs.yt-dlp
+				
+			# Multimedia
+				pkgs.mpv
+				pkgs.spotify
+				
+			# Documents
+				pkgs.libreoffice-qt
+				
+			# Communication
+				pkgs.discord
+				pkgs.betterdiscordctl
+				#pkgs.chatterino2 #Using AppImage
+				#pkgs.zoom-us #Broken
+				
+			# Production
+				pkgs.gimp
+				pkgs.godot
+				pkgs.obs-studio
 		];
 
 		sessionVariables = {};
@@ -58,22 +82,18 @@ in
 			enable = true;
 			userName  = "miaoles";
 			userEmail = "iao_mm@pm.me";
+			extraConfig = {
+				init.defaultBranch = "main";
+				credential.helper = "store --file ~/Configuration/git/credentials";
+			};
 		};
-
+		
 		firefox = {
 			enable = true;
 		};
-
-		#steam = {
-		#	enable = true;
-		#};
 	};
 
 	services = {
-		picom = {
-			enable = true;
-		};
-
 		xsettingsd = {
 			enable = true;
 		};
@@ -81,13 +101,43 @@ in
 		#sxhkd = {
 		#	enable = true;
 		#};
+		
+		picom = {
+			enable = true;
+			package = pkgs.picom.overrideAttrs(o: {
+				src = pkgs.fetchFromGitHub {
+					repo = "picom";
+					owner = "yshui";
+					rev = "ad18d129cc549e4e00a0499df7de87f249a3a71f";
+					sha256 = "06s1s1zyg2aqggml0q02fn642rh1l38g8aj38qjg8gq7gwsa69vs";
+				};
+			});
+		};
 	};
 
 	#gtk = {
 	#	enable = true;
+	#	
+	#	font = {
+	#		name = "Roboto";
+	#		size = 8;
+	#	};
+	#	
+	#	theme = {
+	#		name = "Numix-SX-Light";
+	#		package = pkgs.numix-sx-gtk-theme;
+	#	};
+	#	
+	#	gtk2 = {
+	#		
+	#	};
+	#
+	#	gtk3 = {
+	#		
+	#	};
 	#};
 
-	qt = {
-		enable = true;
-	};
+	#qt = {
+	#	enable = true;
+	#};
 }
