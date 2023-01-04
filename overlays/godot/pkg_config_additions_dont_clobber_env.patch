@@ -1,0 +1,85 @@
+diff --git a/SConstruct b/SConstruct
+index f7504f7..478fef0 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -116,10 +116,9 @@ elif os.name == "nt" and methods.get_cmdline_bool("use_mingw", False):
+ # want to have to pull in manually.
+ # Then we prepend PATH to make it take precedence, while preserving SCons' own entries.
+ env_base = Environment(tools=custom_tools)
+-env_base.PrependENVPath("PATH", os.getenv("PATH"))
+-env_base.PrependENVPath("PKG_CONFIG_PATH", os.getenv("PKG_CONFIG_PATH"))
+-if "TERM" in os.environ:  # Used for colored output.
+-    env_base["ENV"]["TERM"] = os.environ["TERM"]
++for k in ("TERM", "PATH", "PKG_CONFIG_PATH"):
++    if (k in os.environ):
++        env_base["ENV"][k] = os.environ[k]
+ 
+ env_base.disabled_modules = []
+ env_base.module_version_string = ""
+diff --git a/platform/linuxbsd/detect.py b/platform/linuxbsd/detect.py
+index 36644d5..2c3ab66 100644
+--- a/platform/linuxbsd/detect.py
++++ b/platform/linuxbsd/detect.py
+@@ -201,6 +201,9 @@ def configure(env):
+         env.ParseConfig("pkg-config xrandr --cflags --libs")
+         env.ParseConfig("pkg-config xrender --cflags --libs")
+         env.ParseConfig("pkg-config xi --cflags --libs")
++        env.ParseConfig("pkg-config xfixes --cflags --libs")
++        env.ParseConfig("pkg-config glu --cflags --libs")
++        env.ParseConfig("pkg-config zlib --cflags --libs")
+ 
+     if env["touch"]:
+         env.Append(CPPDEFINES=["TOUCH_ENABLED"])
+@@ -293,7 +296,7 @@ def configure(env):
+     if env["fontconfig"]:
+         if os.system("pkg-config --exists fontconfig") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["FONTCONFIG_ENABLED"])
+-            env.ParseConfig("pkg-config fontconfig --cflags")  # Only cflags, we dlopen the library.
++            env.ParseConfig("pkg-config alsa --cflags --libs")
+         else:
+             env["fontconfig"] = False
+             print("Warning: fontconfig libraries not found. Disabling the system fonts support.")
+@@ -301,14 +304,14 @@ def configure(env):
+     if os.system("pkg-config --exists alsa") == 0:  # 0 means found
+         env["alsa"] = True
+         env.Append(CPPDEFINES=["ALSA_ENABLED", "ALSAMIDI_ENABLED"])
+-        env.ParseConfig("pkg-config alsa --cflags")  # Only cflags, we dlopen the library.
++        env.ParseConfig("pkg-config alsa --cflags --libs")
+     else:
+         print("Warning: ALSA libraries not found. Disabling the ALSA audio driver.")
+ 
+     if env["pulseaudio"]:
+         if os.system("pkg-config --exists libpulse") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["PULSEAUDIO_ENABLED"])
+-            env.ParseConfig("pkg-config libpulse --cflags")  # Only cflags, we dlopen the library.
++            env.ParseConfig("pkg-config alsa --cflags --libs")
+         else:
+             env["pulseaudio"] = False
+             print("Warning: PulseAudio development libraries not found. Disabling the PulseAudio audio driver.")
+@@ -316,7 +319,7 @@ def configure(env):
+     if env["dbus"]:
+         if os.system("pkg-config --exists dbus-1") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["DBUS_ENABLED"])
+-            env.ParseConfig("pkg-config dbus-1 --cflags")  # Only cflags, we dlopen the library.
++            env.ParseConfig("pkg-config alsa --cflags --libs")
+         else:
+             env["dbus"] = False
+             print("Warning: D-Bus development libraries not found. Disabling screensaver prevention.")
+@@ -324,7 +327,7 @@ def configure(env):
+     if env["speechd"]:
+         if os.system("pkg-config --exists speech-dispatcher") == 0:  # 0 means found
+             env.Append(CPPDEFINES=["SPEECHD_ENABLED"])
+-            env.ParseConfig("pkg-config speech-dispatcher --cflags")  # Only cflags, we dlopen the library.
++            env.ParseConfig("pkg-config alsa --cflags --libs")
+         else:
+             env["speechd"] = False
+             print("Warning: Speech Dispatcher development libraries not found. Disabling Text-to-Speech support.")
+@@ -334,7 +337,7 @@ def configure(env):
+         if env["udev"]:
+             if os.system("pkg-config --exists libudev") == 0:  # 0 means found
+                 env.Append(CPPDEFINES=["UDEV_ENABLED"])
+-                env.ParseConfig("pkg-config libudev --cflags")  # Only cflags, we dlopen the library.
++                env.ParseConfig("pkg-config alsa --cflags --libs")
+             else:
+                 env["udev"] = False
+                 print("Warning: libudev development libraries not found. Disabling controller hotplugging support.")

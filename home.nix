@@ -2,6 +2,12 @@
 
 { config, pkgs, lib, ... }:
 
+let
+	unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+	spotify = pkgs.callPackage ./modules/spotify {};
+	godot4 = pkgs.callPackage ./modules/godot4 {};
+	#chatterino = pkgs.callPackage ./modules/chatterino {};
+in	
 {
 	home = {
 		username = "miles";
@@ -10,46 +16,59 @@
 		# Install these packages for just this user.
 		packages = with pkgs; [
 			# Theme
+				pkgs.gtk3
 				pkgs.numix-sx-gtk-theme #GTK2 + GTK3
+				unstable.picom-next
 				
 			# Shell
 				pkgs.neofetch
-				
+					
 			# System Utilities
 				pkgs.cmst
 				pkgs.copyq
 				pkgs.etcher
+				pkgs.gparted
 				
 			# Wine
-				pkgs.wineWowPackages.staging
-				#(pkgs.winetricks.override { wine = wineWowPackages.staging; })
-				#pkgs.q4wine #Not working yet
+				unstable.wineWowPackages.staging
+				unstable.winetricks
+				unstable.q4wine
+				unstable.dxvk
 				pkgs.icoutils
-				pkgs.protontricks
-				pkgs.protonup #proton-ge
+				unstable.protontricks
+				unstable.protonup #proton-ge
+				#unstable.rare
 				
-			# Network Utilities
+			# Network
 				pkgs.qbittorrent
 				pkgs.soulseekqt
-				pkgs.yt-dlp
+				unstable.yt-dlp
 				
 			# Multimedia
-				pkgs.mpv
-				pkgs.spotify
+				#unstable.easyeffects
+				unstable.mpv
+				spotify
 				
 			# Documents
 				pkgs.libreoffice-qt
+				#pkgs.kgpg
 				
 			# Communication
-				pkgs.discord
-				pkgs.betterdiscordctl
-				#pkgs.chatterino2 #Using AppImage
-				#pkgs.zoom-us #Broken
+				unstable.discord-canary
+				unstable.betterdiscordctl
+				unstable.chatterino2 #overlayed to chatterino7
+				#chatterino
+				#pkgs.zoom-us #broken
 				
 			# Production
-				pkgs.gimp
-				pkgs.godot
-				pkgs.obs-studio
+				unstable.git-cola
+				unstable.gimp
+				unstable.inkscape
+				unstable.blender
+				unstable.godot
+				unstable.obs-studio
+				unstable.lmms
+				#unstable.zettlr
 		];
 
 		sessionVariables = {};
@@ -62,7 +81,7 @@
 		# You can update Home Manager without changing this value. See
 		# the Home Manager release notes for a list of state version
 		# changes in each release.
-		stateVersion = "21.11";
+		stateVersion = "21.05";
 	};
 
 	programs = {
@@ -76,6 +95,16 @@
 			bashrcExtra = ''source ~/Configuration/bash/bashrc'';
 			profileExtra = ''source ~/Configuration/bash/bash_profile'';
 			shellOptions = [];
+		};
+		
+		zsh = {
+			enable = true;
+			enableAutosuggestions = true;
+			enableCompletion = true;
+			#enableSyntaxHighlighting = true;
+			dotDir = "Configuration/zhrc";
+			initExtraFirst = "";
+			initExtra = ''source ~/Configuration/zsh/extra.zshrc'';
 		};
 
 		git = {
@@ -91,53 +120,52 @@
 		firefox = {
 			enable = true;
 		};
+		
+		chromium = {
+			enable = true;
+			package = pkgs.ungoogled-chromium;
+			extensions = [
+				"cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+				"jhnleheckmknfcgijgkadoemagpecfol" # Auto Tab Discard
+				"bkdgflcldnnnapblkhphbgpggdiikppg" # DuckDuckGo Privacy Essentials
+				"mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
+				"nlikaonifbagdlcjoepofomefchkahab" # Bandcamp Volume
+				"hhinaapppaileiechjoiifaancjggfjm" # Web Scrobbler
+				"hlepfoohegkhhmjieoechaddaejaokhf" # Refined GitHub
+				"ocgpenflpmgnfapjedencafcfakcekcd" # Redirector
+				"dejobinhdiimklegodgbmbifijpppopn" # Tab Reloader
+				"ofbbahodfeppoklmgjiokgfdgcndngjm" # TTV LOL
+			];
+		};
 	};
 
 	services = {
-		xsettingsd = {
-			enable = true;
-		};
-
-		#sxhkd = {
+		#xsettingsd = {
 		#	enable = true;
 		#};
-		
-		picom = {
-			enable = true;
-			package = pkgs.picom.overrideAttrs(o: {
-				src = pkgs.fetchFromGitHub {
-					repo = "picom";
-					owner = "yshui";
-					rev = "ad18d129cc549e4e00a0499df7de87f249a3a71f";
-					sha256 = "06s1s1zyg2aqggml0q02fn642rh1l38g8aj38qjg8gq7gwsa69vs";
-				};
-			});
+	};
+	
+	xdg.mimeApps = {
+		enable = true;
+		#associations.added = {
+		#	"" = [ "" ];
+		#};
+		defaultApplications = {
+			"inode/directory" = [ "pcmanfm-qt.desktop" ];
+			"text/html" = [ "firefox.desktop" ];
+			"scheme-handler/http" = [ "firefox.desktop" ];
+			"scheme-handler/https" = [ "firefox.desktop" ];
+			"x-scheme-handler/http" = [ "firefox.desktop" ];
+			"x-scheme-handler/https" = [ "firefox.desktop" ];
+			"x-scheme-handler/chrome" = [ "firefox.desktop" ];
+			"application/x-extension-htm" = [ "firefox.desktop" ];
+			"application/x-extension-html" = [ "firefox.desktop" ];
+			"application/x-extension-shtml" = [ "firefox.desktop" ];
+			"application/xhtml+xml" = [ "firefox.desktop" ];
+			"application/x-extension-xhtml" = [ "firefox.desktop" ];
+			"application/x-extension-xht" = [ "firefox.desktop" ];
 		};
 	};
-
-	#gtk = {
-	#	enable = true;
-	#	
-	#	font = {
-	#		name = "Roboto";
-	#		size = 8;
-	#	};
-	#	
-	#	theme = {
-	#		name = "Numix-SX-Light";
-	#		package = pkgs.numix-sx-gtk-theme;
-	#	};
-	#	
-	#	gtk2 = {
-	#		
-	#	};
-	#
-	#	gtk3 = {
-	#		
-	#	};
-	#};
-
-	#qt = {
-	#	enable = true;
-	#};
+	
+	manual.manpages.enable = false;
 }
