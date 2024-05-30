@@ -1,91 +1,31 @@
 # iao NixOS home-manager configuration
 
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
-      home-manager = import <home-manager/nixos> { };
-      unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-      chatterino-iao = pkgs.callPackage ./packages/chatterino-iao { };
+      chatterino-iao = pkgs.callPackage ./packages/chatterino-iao {};
 in
 {
       imports = [
             ./modules/bash.nix
-            ./modules/picom.nix
+            ./modules/git.nix
             ./modules/xdg.nix
+            ./modules/picom.nix
+            ./modules/wine.nix
+            ./modules/firefox.nix
+            ./modules/chromium.nix
             ./modules/vscode.nix
             ./modules/odin.nix
       ];
 
+      nixpkgs.config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [ ];
+      };
+
       home = {
             username = "miles";
             homeDirectory = "/home/miles";
-
-            packages = with pkgs; [
-                  # Theme
-                  pkgs.gtk3
-                  pkgs.numix-sx-gtk-theme #GTK2 + GTK3
-                  #pkgs.picom-next
-
-                  # Shell
-                  pkgs.neofetch
-
-                  # System Utilities
-                  pkgs.cmst
-                  pkgs.copyq
-                  #pkgs.etcher
-                  pkgs.gparted
-                  pkgs.tor-browser-bundle-bin
-
-                  # Wine
-                  unstable.wineWowPackages.stagingFull
-                  #unstable.wineWow64Packages.staging
-                  #unstable.winePackages.stagingFull
-                  unstable.winetricks
-                  unstable.q4wine
-                  unstable.dxvk
-                  pkgs.icoutils
-                  unstable.protontricks
-                  unstable.protonup #proton-ge
-                  #unstable.rare
-                  #unstable.jdk8
-                  #unstable.jre8
-                  unstable.glibc
-                  unstable.steamtinkerlaunch
-                  unstable.unixtools.xxd
-                  unstable.xorg.xwininfo
-                  unstable.scanmem
-
-                  # Network
-                  pkgs.qbittorrent
-                  pkgs.soulseekqt
-                  unstable.yt-dlp
-                  unstable.freetube
-
-                  # Development
-                  #unstable.kdePackages.kate
-                  unstable.gimp
-                  unstable.inkscape
-                  unstable.blender
-                  #unstable.godot_4
-                  unstable.obs-studio
-                  #unstable.lmms
-                  #unstable.zettlr
-                  #unstable.kdenlive
-
-                  # Multimedia
-                  #unstable.easyeffects
-                  unstable.mpv
-
-                  # Documents
-                  #pkgs.libreoffice-qt
-                  #pkgs.kgpg
-
-                  # Communication
-                  chatterino-iao #unstable.chatterino2
-                  unstable.webcord
-            ];
-
-            sessionVariables = { };
 
             # This value determines the Home Manager release that your
             # configuration is compatible with. This helps avoid breakage
@@ -96,54 +36,75 @@ in
             # the Home Manager release notes for a list of state version
             # changes in each release.
             stateVersion = "24.11";
+
+            packages = with pkgs; [
+                  ### Theme ###
+                  gtk3
+                  numix-sx-gtk-theme #GTK2 + GTK3
+
+                  ### Shell ###
+                  neofetch
+
+                  ### System Utilities ###
+                  cmst
+                  copyq
+                  #etcher
+                  gparted
+                  tor-browser-bundle-bin
+                  #kdePackages.kate
+
+                  ### Network ###
+                  qbittorrent
+                  soulseekqt
+                  yt-dlp
+                  freetube
+
+                  ### Development ###
+                  gimp
+                  inkscape
+                  blender
+                  obs-studio
+                  #lmms
+                  #zettlr
+                  #kdenlive
+
+                  ### Multimedia ###
+                  mpv
+                  #easyeffects
+
+                  ### Documents
+                  #libreoffice-qt
+                  #kgpg
+
+                  ### Communication ###
+                  webcord
+                  chatterino-iao #chatterino2
+            ];
+
+            sessionVariables = {
+                  EDITOR = "featherpad";
+                  _JAVA_AWT_WM_NONREPARENTING = "1"; # Make Java Windows behave with bspwm
+                  DE = "lxqt";
+                  XDG_CURRENT_DESKTOP = "LXQt";
+                  QT_QPA_FLATPAK_PLATFORMTHEME = "lxqt";
+                  QT_QPA_PLATFORMTHEME = "lxqt";
+                  GDK_SCALE = "1";
+                  GTK_CSD = "0";
+                  GTK_OVERLAY_SCROLLING = "0";
+                  FPS = "170"; # Odyssey Neo G7
+                  RADV_PERFTEST = "gpl";
+                  MESA_SHADER_CACHE_DIR = "/opt/cache";
+                  DXVK_CONFIG_FILE = "/home/miles/Configurations/dxvk.conf";
+                  DXVK_HUD = "fps,scale=0.67";
+                  DXVK_STATE_CACHE = "0";
+                  DXVK_STATE_CACHE_PATH = "/opt/cache/dxvk_state_cache/";
+            };
       };
 
       programs = {
-            # Let home-manager manage itself.
-            home-manager.enable = true;
+            home-manager.enable = true; # Let home-manager manage itself.
 
             java.enable = true;
-
-            git = {
-                  enable = true;
-                  userName = "miaoles";
-                  userEmail = "iao_mm@pm.me";
-                  extraConfig = {
-                        init.defaultBranch = "main";
-                        credential.helper = "cache";
-                  };
-            };
-
-            firefox = {
-                  enable = true;
-                  #package = unstable.firefox-devedition;
-                  package = unstable.firefox;
-            };
-
-            chromium = {
-                  enable = true;
-                  package = pkgs.ungoogled-chromium;
-                  extensions = [
-                        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-                        "jhnleheckmknfcgijgkadoemagpecfol" # Auto Tab Discard
-                        "bkdgflcldnnnapblkhphbgpggdiikppg" # DuckDuckGo Privacy Essentials
-                        "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
-                        "nlikaonifbagdlcjoepofomefchkahab" # Bandcamp Volume
-                        "hhinaapppaileiechjoiifaancjggfjm" # Web Scrobbler
-                        "hlepfoohegkhhmjieoechaddaejaokhf" # Refined GitHub
-                        "ocgpenflpmgnfapjedencafcfakcekcd" # Redirector
-                        "dejobinhdiimklegodgbmbifijpppopn" # Tab Reloader
-                        "bpaoeijjlplfjbagceilcgbkcdjbomjd" # TTV LOL
-                        "onlhphabpmijgblopkcjmphbbmeliagn" # UserTesting
-                        "bhplkbgoehhhddaoolmakpocnenplmhf" # Alternate Player for Twitch.tv
-                        "gkojfkhlekighikafcpjkiklfbnlmeio" # Hola VPN - The Website Unblocker
-                  ];
-            };
-      };
-
-      nixpkgs.config = {
-            allowUnfree = true;
-            permittedInsecurePackages = [ ];
       };
 
       manual.manpages.enable = false;

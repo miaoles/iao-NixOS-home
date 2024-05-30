@@ -1,7 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
-      unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
       odin-iao = pkgs.callPackage ../packages/odin-iao { };
       ols-iao = pkgs.callPackage ../packages/ols-iao { };
 in
@@ -9,22 +8,21 @@ in
       home.packages = with pkgs; [
             odin-iao #pkgs.odin
             ols-iao #pkgs.ols
-            unstable.llvm
-            unstable.clang
-            unstable.SDL2
-            unstable.glfw
-            unstable.raylib
-            unstable.renderdoc
-            unstable.vulkan-tools
-            unstable.vulkan-headers
-            unstable.vulkan-loader
-            unstable.vulkan-extension-layer
-            unstable.vulkan-validation-layers
-            unstable.vulkan-utility-libraries
-            unstable.glm
-            #unstable.sublime4
-            unstable.glibc
-            unstable.shaderc
+            llvm
+            clang
+            SDL2
+            glfw
+            raylib
+            renderdoc
+            vulkan-tools
+            vulkan-headers
+            vulkan-loader
+            vulkan-extension-layer
+            vulkan-validation-layers
+            vulkan-utility-libraries
+            glm
+            glibc
+            shaderc
       ];
 
       programs = {
