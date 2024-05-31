@@ -3,7 +3,7 @@
 { pkgs, ... }:
 
 let
-      chatterino-iao = pkgs.callPackage ./packages/chatterino-iao {};
+      chatterino-iao = pkgs.callPackage ./packages/chatterino-iao { };
 in
 {
       imports = [
@@ -103,7 +103,6 @@ in
 
       programs = {
             home-manager.enable = true; # Let home-manager manage itself.
-
             java.enable = true;
       };
 

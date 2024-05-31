@@ -7,10 +7,10 @@
             bashrcExtra = ''
                   [[ $- != *i* ]] && return
 
-                  # Paths
+                  ### Paths ###
                   	PATH="$PATH:$HOME/Executables";
 
-                  # Prompt
+                  ### Prompt ###
                   	CURRENTHOUR="$(date +%H)";
                   	CURRENTMINUTE="$(date +%M)";
                   	CURRENTSECOND="$(date +%S)";
@@ -37,7 +37,7 @@
                   	RESET="$(tput sgr0)";
                   	PS1="\[$BLACKBG$BOLD\] $CURRENTUSER\[$RESET$BLACKBG$WHITEFG\] @\[$RESET$BLACKBG$BOLD\]$CURRENTHOSTNAME\[$RESET$BLACKBG\] \w \[$RESET\] ";
 
-                  # Functions
+                  ### Functions ###
                         nix-where () {
                               echo "nix-store result:"
                               nix-store -r $(which $1)

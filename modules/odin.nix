@@ -5,25 +5,30 @@ let
       ols-iao = pkgs.callPackage ../packages/ols-iao { };
 in
 {
-      home.packages = with pkgs; [
-            odin-iao #pkgs.odin
-            ols-iao #pkgs.ols
-            llvm
-            clang
-            SDL2
-            glfw
-            raylib
-            renderdoc
-            vulkan-tools
-            vulkan-headers
-            vulkan-loader
-            vulkan-extension-layer
-            vulkan-validation-layers
-            vulkan-utility-libraries
-            glm
-            glibc
-            shaderc
-      ];
+      home = {
+            packages = with pkgs; [
+                  odin-iao #pkgs.odin
+                  ols-iao #pkgs.ols
+                  llvm
+                  clang
+                  SDL2
+                  glfw
+                  raylib
+                  renderdoc
+                  vulkan-tools
+                  vulkan-headers
+                  vulkan-loader
+                  vulkan-extension-layer
+                  vulkan-validation-layers
+                  vulkan-utility-libraries
+                  glm
+                  glibc
+                  shaderc
+            ];
+            sessionVariables = {
+                  odin = "ODIN_ROOT=${odin-iao}/share odin";
+            };
+      };
 
       programs = {
             vscode = {
@@ -61,7 +66,7 @@ in
                   };
             };
             bash.shellAliases = {
-                  odin = "ODIN_ROOT=${odin-iao}/share odin";
+                  #odin = "ODIN_ROOT=${odin-iao}/share odin";
             };
       };
 }

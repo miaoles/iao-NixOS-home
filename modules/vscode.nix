@@ -29,7 +29,7 @@ in
                         "terminal.integrated.fontSize" = 12;
                         "chat.editor.fontSize" = 12;
 
-                        ### Editing ###
+                        ### Editor ###
                         "editor.tabSize" = 6;
                         "editor.insertSpaces" = false;
                         "files.trimTrailingWhitespace" = true;
@@ -41,7 +41,7 @@ in
                               "itemMargin" = 6;
                         };
 
-                        ### Nix IDE ###
+                        ### Extension: Nix IDE ###
                         "nix.enableLanguageServer" = true;
                         "nix.serverPath" = "${pkgs.nixd}/bin/nixd";
                         "nix.formatterPath" = "${nixpkgs-fmt-iao}/bin/nixpkgs-fmt";
