@@ -16,6 +16,7 @@ in
             ./modules/chromium.nix
             ./modules/vscode.nix
             ./modules/odin.nix
+            ./modules/niaox
       ];
 
       nixpkgs.config = {
@@ -58,6 +59,7 @@ in
                   soulseekqt
                   yt-dlp
                   freetube
+                  ladybird
 
                   ### Development ###
                   gimp
@@ -104,6 +106,7 @@ in
       programs = {
             home-manager.enable = true; # Let home-manager manage itself.
             java.enable = true;
+            niaox.enable = true;
       };
 
       manual.manpages.enable = false;
