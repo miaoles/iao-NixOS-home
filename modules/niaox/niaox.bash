@@ -39,7 +39,6 @@ discard_os() {
       sudo nix-collect-garbage
 }
 
-# Main function
 niaox() {
       case $1 in
       update)

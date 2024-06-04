@@ -13,7 +13,7 @@ in
                   clang
                   SDL2
                   glfw
-                  raylib
+                  #raylib
                   renderdoc
                   vulkan-tools
                   vulkan-headers

@@ -20,15 +20,8 @@ in {
       };
 
       config = mkIf cfg.enable {
-            home.packages = with pkgs; [
-                  # Add any packages required by Niaox
-            ];
-
             programs.bash = {
                   enable = true;
-                  shellAliases = {
-                        # Add any aliases related to Niaox
-                  };
                   initExtra = ''
                         export NIXOS_CONFIGURATION_DIR="${cfg.nixosConfigurationDir}"
                         export HOME_MANAGER_CONFIGURATION_DIR="${cfg.homeManagerConfigurationDir}"

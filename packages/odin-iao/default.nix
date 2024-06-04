@@ -12,7 +12,7 @@ let
 in
 stdenv.mkDerivation rec {
       pname = "odin";
-      version = "dev-2024-05";
+      version = "dev-2024-06";
 
       src = fetchFromGitHub {
             owner = "odin-lang";
