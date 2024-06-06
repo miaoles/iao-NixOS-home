@@ -4,13 +4,13 @@ let
       odin-iao = pkgs.callPackage ./../odin-iao { };
 in
 stdenv.mkDerivation {
-      version = "0-unstable-2024-05-20";
+      version = "0-unstable-2024-06-04";
       name = "ols";
       pname = "ols";
       src = fetchFromGitHub {
             owner = "DanielGavin";
             repo = "ols";
-            rev = "b5b6733320bd866b6895cc2f44910f180dda4e0b";
+            rev = "b7abe27c51968d0a77f3eaf899de63e4c38bc129";
             hash = "sha256-fHCSPqeN24QbCzwMCLtvK5YnR0ExveDvXRuWL2nHt8M=";
             fetchSubmodules = true;
       };

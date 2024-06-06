@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ user, pkgs, ... }:
 
 let
       nixpkgs-fmt-iao = pkgs.callPackage ../packages/nixpkgs-fmt-iao {};
@@ -13,7 +13,7 @@ in
       };
 
       programs = {
-            vscode = {
+            vscode = if user.editor == "vscode" then {
                   enable = true;
                   package = pkgs.vscodium;
                   userSettings = {
@@ -60,6 +60,6 @@ in
                               "editor.insertSpaces" = true;
                         };
                   };
-            };
+            } else {};
       };
 }

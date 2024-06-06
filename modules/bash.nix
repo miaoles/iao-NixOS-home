@@ -52,7 +52,6 @@
                               echo playlist_$date.txt
                         }
             '';
-
             profileExtra = '' '';
             shellOptions = [
                   "histappend"
@@ -63,7 +62,6 @@
             ];
             shellAliases = {
                   ls = "ls --color=auto";
-                  sxlock = "sxlock -f '-*-roboto-*-r-*-*-*-*-*-*-*-*-*-*'";
                   steam = "steam -console";
                   priaoritize = "ionice -c 2 -n 0";
             };

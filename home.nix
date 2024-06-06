@@ -1,10 +1,7 @@
 # iao NixOS home-manager configuration
 
-{ pkgs, ... }:
+{ system, user, pkgs, ... }:
 
-let
-      chatterino-iao = pkgs.callPackage ./packages/chatterino-iao { };
-in
 {
       imports = [
             ./modules/bash.nix
@@ -14,6 +11,7 @@ in
             ./modules/wine.nix
             ./modules/firefox.nix
             ./modules/chromium.nix
+            ./modules/chatterino.nix
             ./modules/vscode.nix
             ./modules/odin.nix
             ./modules/niaox
@@ -25,8 +23,8 @@ in
       };
 
       home = {
-            username = "miles";
-            homeDirectory = "/home/miles";
+            username = user.username;
+            homeDirectory = "/home/" + user.username;
 
             # This value determines the Home Manager release that your
             # configuration is compatible with. This helps avoid breakage
@@ -47,7 +45,7 @@ in
                   neofetch
 
                   ### System Utilities ###
-                  cmst
+                  #cmst
                   copyq
                   #etcher
                   gparted
@@ -55,7 +53,7 @@ in
                   #kdePackages.kate
 
                   ### Network ###
-                  qbittorrent
+                  transmission-qt
                   soulseekqt
                   yt-dlp
                   freetube
@@ -80,23 +78,22 @@ in
 
                   ### Communication ###
                   webcord
-                  chatterino-iao #chatterino2
             ];
 
             sessionVariables = {
-                  EDITOR = "featherpad";
+                  EDITOR = user.editor;
+                  FPS = system.framesPerSecond;
                   _JAVA_AWT_WM_NONREPARENTING = "1"; # Make Java Windows behave with bspwm
-                  DE = "lxqt";
-                  XDG_CURRENT_DESKTOP = "LXQt";
-                  QT_QPA_FLATPAK_PLATFORMTHEME = "lxqt";
-                  QT_QPA_PLATFORMTHEME = "lxqt";
+                  DE = user.desktopEnvironment;
+                  XDG_CURRENT_DESKTOP = user.desktopEnvironment;
+                  QT_QPA_FLATPAK_PLATFORMTHEME = user.desktopEnvironment;
+                  QT_QPA_PLATFORMTHEME = user.desktopEnvironment;
                   GDK_SCALE = "1";
                   GTK_CSD = "0";
                   GTK_OVERLAY_SCROLLING = "0";
-                  FPS = "170"; # Odyssey Neo G7
                   RADV_PERFTEST = "gpl";
                   MESA_SHADER_CACHE_DIR = "/opt/cache";
-                  DXVK_CONFIG_FILE = "/home/miles/Configurations/dxvk.conf";
+                  DXVK_CONFIG_FILE = "/home/" + user.username + "/Configurations/dxvk.conf";
                   DXVK_HUD = "fps,scale=0.67";
                   DXVK_STATE_CACHE = "0";
                   DXVK_STATE_CACHE_PATH = "/opt/cache/dxvk_state_cache/";

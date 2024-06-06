@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ user, pkgs, ... }:
 
 let
       odin-iao = pkgs.callPackage ../packages/odin-iao { };
@@ -31,7 +31,7 @@ in
       };
 
       programs = {
-            vscode = {
+            vscode = if user.editor == "vscode" then {
                   userSettings = {
                         "ols.server.path" = "${ols-iao}/bin/ols";
                         "[odin]" = {
@@ -64,7 +64,8 @@ in
                               "indent_cases" = true;
                         };
                   };
-            };
+            } else {};
+
             bash.shellAliases = {
                   #odin = "ODIN_ROOT=${odin-iao}/share odin";
             };
